@@ -26,6 +26,13 @@ fruits_to_show = my_fruit_list.loc[fruits_selected]
 
 streamlit.dataframe(fruits_to_show)
 
+#create the repeatable code block (called a function)
+def get_fruityvice_data(this_fruit_choice):
+      fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+ fruit_choice)
+      fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
+      return fruityvice_normalized
+    
+#New Section to Display Fruity api response
 streamlit.header("Fruityvice Fruit Advice!")
 #streamlit.text(fruityvice_response.json())
 try:
@@ -36,9 +43,8 @@ try:
   else:
       # write your own comment -what does the next line do? 
       # write your own comment - what does this do?
-      fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+ fruit_choice)
-      fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
-      streamlit.dataframe(fruityvice_normalized)
+      back_form_function = get_fruityvice_data(fruit_choice)
+      streamlit.dataframe(back_form_function)
 
 except URLError as e:
     streamlit.error()
